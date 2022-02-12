@@ -1,0 +1,21 @@
+{
+    "name": "zerohashproject",
+    "version": "1.0.0",
+    "description": "A api request for json object with nodejs",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Info: no test specified\" && exit 1",
+        "start": "node app.js",
+        "watch": "nodemon --ext *"
+    },
+    "author": "jingbai",
+    "dependencies": {
+        "express": "^4.17.2",
+        "request": "^2.88.2"
+    },
+    "devDependencies": {
+        "connect-livereload": "^0.6.1",
+        "livereload": "^0.9.3",
+        "nodemon": "^2.0.15"
+    }
+}
