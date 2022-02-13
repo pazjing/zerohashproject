@@ -23,11 +23,11 @@ jobs:
         docker images
         docker ps
         chmod +x ./app_test.sh
-        ./app_test.sh 3000
+        ./app_test.sh 8080
         
   push-image:
     needs: build
-    if: github.ref == 'refs/heads/main'
+   # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - name: Login to DockerHub
