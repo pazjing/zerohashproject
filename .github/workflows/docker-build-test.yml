@@ -14,12 +14,16 @@ jobs:
          
     - name: docker container start
       run: |
+        sleep 10
         docker run -p 3000:3000 -d pazjing/zerohashapp:1.0.0
     
     - name: docker container test
       run: |
+        sleep 10
         docker images
+        sleep 10
         docker ps
+        
         ps -ef | grep 3000
         curl -v http://localhost:3000/health
         chmod +x ./app_test.sh
