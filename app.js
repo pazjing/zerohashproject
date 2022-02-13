@@ -1,45 +1,56 @@
 var express = require("express");
 var app = express();
 var request = require('request');
+const apiMetrics = require('prometheus-api-metrics');
+app.use(apiMetrics());
 
-app.get("/url", (req, res, next) => {
-    res.json(["Tony","Lisa","Michael","Ginger","Food"]);
-   });
-
-/* GET home page. */
-app.get('/', function(req, res, next) {
-    res.send("Home page. 200 OK");
-    res.status(200);
-  });
-
+/* GET health. */
 app.get('/health', function(req, res, next) {
-    res.send("Running fine. 200 OK");
-    res.status(200);
+    res.status(200).json({"message": "Application is running OK"});
   });
+
+/* GET metics. */
+app.get('/metrics', function (req, res) {
+    res.set('Content-Type', prom.register.contentType);
+    res.end(prom.register.metrics());
+});
+
+app.get('/favicon.ico', function (req, res) {
+   res.status(204);
+});
+
+/* To support test json parse error */
+app.get('/jsonerror', function(req, res, next) {
+  res.status(200).send('{"data":{"base":"BTC","currency":"EUR","amount":"37530.49",}}');
+});
 
 app.get('/:currency', async function (req, res) {
     reqCurrency = req.params.currency.toUpperCase();
-    var currencyList = ["EUR","GBP","USD","JPY"];
-  
+
+    // Add BAD for test scenario 
+    var currencyList = ["EUR","GBP","USD","JPY", "BAD"];
+
     if (currencyList.includes(reqCurrency)) {
-      currencyApiUrl = 'https://api.coinbase.com/v2/prices/spot?currency=' + reqCurrency
+      currencyApiUrl = 'https://api.coinbase.com/v2/prices/spot?currency=' + reqCurrency;
+      console.log(currencyApiUrl);
       request.get(
         currencyApiUrl,
         function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                console.log(body);
-                const response = body;
-                res.send(response);
-            }
-        }
-      );
-    } 
-    else {
-      var errorResponse = "Please only use EUR, GBP, USD, JPY for the current valid currency request.";
-      res.status(404);
-      res.send(errorResponse);
+          if(!error) {
+              console.log(response.statusCode);
+              console.log(body);
+              res.setHeader('Content-Type', 'application/json');
+              res.status(response.statusCode);
+              res.send(body);
+          } else {
+              res.json(error);
+          }
+        });
+    } else {
+        res.status(400).json({"error": "Currently, only support EUR, GBP, USD, JPY currencies"});
     }
-})
+});
+
 
 app.listen(3000, () => {
  console.log("Server running on port 3000");
