@@ -5,17 +5,16 @@
     "main": "app.js",
     "scripts": {
         "test": "echo \"Info: no test specified\" && exit 1",
-        "start": "node app.js",
-        "watch": "nodemon --ext *"
+        "start": "node app.js"
     },
     "author": "jingbai",
     "dependencies": {
         "express": "^4.17.2",
+        "prom-client": "^14.0.1",
         "request": "^2.88.2"
     },
     "devDependencies": {
         "connect-livereload": "^0.6.1",
-        "livereload": "^0.9.3",
-        "nodemon": "^2.0.15"
+        "livereload": "^0.9.3"
     }
 }
