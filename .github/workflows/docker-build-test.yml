@@ -42,4 +42,4 @@ jobs:
         context: ./
         tags: |
           pazjing/zerohashapp:latest 
-          push: true
+        push: true
