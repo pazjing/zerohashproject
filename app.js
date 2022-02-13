@@ -1,6 +1,8 @@
 var express = require("express");
 var app = express();
 var request = require('request');
+const apiMetrics = require('prometheus-api-metrics');
+app.use(apiMetrics());
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
@@ -10,6 +12,11 @@ app.get('/', function(req, res, next) {
 app.get('/health', function(req, res, next) {
     res.status(200).json({"message": "Application is running OK"});
   });
+
+app.get('/metrics', function (req, res) {
+    res.set('Content-Type', prom.register.contentType);
+    res.end(prom.register.metrics());
+});
 
 app.get('/:currency', async function (req, res) {
     reqCurrency = req.params.currency.toUpperCase();
@@ -34,7 +41,8 @@ app.get('/:currency', async function (req, res) {
     else {
         res.status(400).json({"error": "Currently, only support EUR, GBP, USD, JPY currencies"});
     }
-})
+});
+
 
 app.listen(3000, () => {
  console.log("Server running on port 3000");
