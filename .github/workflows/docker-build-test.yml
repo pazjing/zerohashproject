@@ -18,5 +18,5 @@ jobs:
     
     - name: docker container test
       run: |
-        chmod +x ./app_test.sh
+        chmod +x ./app_test.sh 8080
         ./app_test.sh
