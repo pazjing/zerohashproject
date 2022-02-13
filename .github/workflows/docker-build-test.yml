@@ -21,6 +21,6 @@ jobs:
         docker images
         docker ps
         ps -ef | grep 3000
-        curl -v http://localhost:8080/health
+        curl -v http://localhost:3000/health
         chmod +x ./app_test.sh
-        ./app_test.sh 8080
+        ./app_test.sh
