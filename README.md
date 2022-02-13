@@ -9,5 +9,6 @@ Include a `/health` endpoint that returns 200 if the application is running.
 # Note
 metric page
 docker image
+test coinbase
 
 
