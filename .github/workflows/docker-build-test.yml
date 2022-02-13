@@ -18,5 +18,8 @@ jobs:
     
     - name: docker container test
       run: |
+        docker images
+        docker ps
+        curl -v http:localhost:8080/health
         chmod +x ./app_test.sh
         ./app_test.sh 8080
