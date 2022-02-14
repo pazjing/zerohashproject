@@ -25,6 +25,28 @@ jobs:
         chmod +x ./app_test.sh
         ./app_test.sh 3000
         
+    - name: Send JSON data to Slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      if: always()
+      with:
+        payload: |
+          {
+            "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+  
   push-image:
     needs: build
     if: github.ref == 'refs/heads/main'
@@ -54,4 +76,17 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Send push image result to Slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        if: always()
+        with:
+          payload: |
+            {
+              "text": "GitHub Action build result: ${{ job.status }}\n"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
