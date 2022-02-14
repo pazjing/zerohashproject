@@ -27,7 +27,7 @@ jobs:
         
   push-image:
     needs: build
-   # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -48,7 +48,8 @@ jobs:
         with:
           context: ./
           tags: |
-            pazjing/zerohashapp:latest 
+            pazjing/zerohashapp:latest
+            pazjing/zerohashapp:1.0.0
           push: true
 
       - name: Image digest
