@@ -1,6 +1,6 @@
 apiVersion: v2
-name: helmchart
-description: A Helm chart for Kubernetes
+name: zerohashchart
+description: A Helm chart for deploy node js app to  Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #

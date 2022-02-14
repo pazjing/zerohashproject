@@ -4,10 +4,15 @@ var request = require('request');
 const apiMetrics = require('prometheus-api-metrics');
 app.use(apiMetrics());
 
+/* Home page */
+app.get('/', function(req, res, next) {
+    res.status(200).send("Home page. 200 OK")
+});
+
 /* GET health. */
 app.get('/health', function(req, res, next) {
     res.status(200).json({"message": "Application is running OK"});
-  });
+});
 
 /* GET metics. */
 app.get('/metrics', function (req, res) {
