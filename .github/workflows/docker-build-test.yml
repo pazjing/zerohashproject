@@ -24,7 +24,7 @@ jobs:
         docker ps
         chmod +x ./app_test.sh
         ./app_test.sh 3000
-    
+        
     - name: Send JSON data to Slack
       id: slack
       uses: slackapi/slack-github-action@v1.18.0
@@ -46,7 +46,7 @@ jobs:
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        
+  
   push-image:
     needs: build
     if: github.ref == 'refs/heads/main'
@@ -89,3 +89,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
