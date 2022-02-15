@@ -1,32 +1,55 @@
 name: Release Charts
 
-on:
+on:   
   push:
     branches:
       - main
 
+  workflow_run:
+    workflows:
+      - DockerPush
+    types:
+      - completed
+
 jobs:
-  release:
+  Release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          path: 'source'
+                
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: 'gh-pages'
+          path: 'gh-pages'
 
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
           version: v3.7.1
+      
+      - name: Sync Helm Repo
+        run: |
+          cd source
+          mkdir -p gh-pages
+          cd gh-pages
+          helm package ../charts/*
+          helm repo index --url https://pazjing.github.io/zerohashproject/ .
+          pwd
+          ls -alt
+          cat index.yaml
+          
+      - name: Push repo to gh-pages branch
+        run: |
+          mv source/gh-pages/* gh-pages/
+          cd gh-pages
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update gh-pages [SKIP CI]" -m "${{ github.event.head_commit.message }}"
+          git push
 
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.3.0
-        with:
-          charts_dir: helmchart
-        env:
-          CR_TOKEN: "${{ secrets.CR_TOKEN }}"

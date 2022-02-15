@@ -1,0 +1,101 @@
+name: DockerPush
+
+on:   
+  push:
+    branches:
+      - main
+
+  workflow_run:
+    workflows:
+      - DockerBuildandTest
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: docker build nodejs
+      run: |
+        docker build . -t pazjing/zerohashapp:0.0.1
+         
+    - name: start docker container
+      run: |
+        sleep 10
+        docker run -p 3000:3000 -d pazjing/zerohashapp:0.0.1
+    
+    - name: test docker container
+      run: |
+        sleep 30
+        docker images
+        docker ps
+        chmod +x ./app_test.sh
+        ./app_test.sh 3000
+        
+    - name: Send JSON data to Slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      if: always()
+      with:
+        payload: |
+          {
+            "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+  
+  push-image:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          tags: |
+            pazjing/zerohashapp:latest
+            pazjing/zerohashapp:1.0.0
+          push: true
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Send push image result to Slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        if: always()
+        with:
+          payload: |
+            {
+              "text": "GitHub Action push image result: ${{ job.status }}\n"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
