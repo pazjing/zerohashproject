@@ -6,7 +6,7 @@ on:
       - feature/helmchart
 
 jobs:
-  release:
+  Release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
           mkdir -p gh-pages
           cd gh-pages
           helm package ../charts/*
-          helm repo index .
+          helm repo index --url https://pazjing.github.io/zerohashproject/ .
           pwd
           ls -alt
           cat index.yaml
