@@ -1,6 +1,16 @@
-name: Docker Build and Test
+name: DockerPush
 
-on: [push]
+on:   
+  push:
+    branches:
+      - main
+      - feature/helmchart
+
+  workflow_run:
+    workflows:
+      - DockerBuildandTest
+    types:
+      - completed
 
 jobs:
   build:

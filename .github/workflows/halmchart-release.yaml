@@ -1,9 +1,16 @@
 name: Release Charts
 
-on:
+on:   
   push:
     branches:
+      - main
       - feature/helmchart
+
+  workflow_run:
+    workflows:
+      - DockerPush
+    types:
+      - completed
 
 jobs:
   Release:
