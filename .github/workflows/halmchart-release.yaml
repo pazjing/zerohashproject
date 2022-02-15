@@ -13,11 +13,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          path: 'source'
+                
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: 'gh-pages'
+          path: 'gh-pages'
 
       - name: Install Helm
         uses: azure/setup-helm@v1
@@ -28,17 +30,16 @@ jobs:
         run: |
           pwd
           ls -alt
-          cd main
           ./sync_repo.sh
           
       - name: Push repo to gh-pages branch
         run: |
-          mvv main/gh-pages/* gh-pages/
+          mv current/gh-pages/* gh-pages/
           cd gh-pages
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git config user.name "$GITHUB_ACTOR"
           git add -A
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update repo [SKIP CI]" -m "${{ github.event.head_commit.message }}"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update gh-pages [SKIP CI]" -m "${{ github.event.head_commit.message }}"
           git push
 
 
