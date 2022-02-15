@@ -1,14 +1,14 @@
 apiVersion: v1
 entries:
-  helm-chart-test:
+  zerohashchart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-02-15T09:58:46.723905808Z"
-    description: A Helm chart for Kubernetes
-    digest: c95c229557cb2fd0b2a211546fbab76a20072c7a627978e48b12002607282af5
-    name: helm-chart-test
+    created: "2022-02-15T10:43:59.341935722Z"
+    description: A Helm chart for deploy node js app to Kubernetes
+    digest: 622e516bc985274e9ce573dbc129e9bb61325a6f503581db37a842b16695b23e
+    name: zerohashchart
     type: application
     urls:
-    - https://pazjing.github.io/zerohashproject/helm-chart-test-0.1.0.tgz
+    - zerohashchart-0.1.0.tgz
     version: 0.1.0
-generated: "2022-02-15T09:58:46.723141592Z"
+generated: "2022-02-15T10:43:59.341213217Z"
