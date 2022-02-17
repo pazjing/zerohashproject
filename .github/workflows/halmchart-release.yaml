@@ -1,14 +1,14 @@
-name: Release Charts
+name: Halmchart-release
 
 on:  
   workflow_run:
-    workflows: ["DockerPush"]
+    workflows: ["Docker-push"]
     types: ["completed"]   
     branches:
-      - main
+      - 'main'
       paths-ignore:
         - 'terraform/**'
-        
+
 jobs:
   Release:
     runs-on: ubuntu-latest
