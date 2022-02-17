@@ -1,3 +1,4 @@
+
 # ECS Fragate deploy with Terrafrom
 
  Configuration in this directory creates set of VPC resources and ECS with Fragate to host the nodejs app container build in this repository
@@ -33,4 +34,3 @@ $ terraform apply --var-file='test.tfvars'
 ### Improvement note
 - tfstate file could be store in remote place or use terraform cloud workspace
 - log,  metric and  Auto scalling  implement 
- 
