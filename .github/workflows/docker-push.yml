@@ -1,11 +1,11 @@
-name: DockerPush
+name: Docker-push
 
 on:
   workflow_run:
-    workflows: ["DockerBuildandTest"]
+    workflows: ["Build-and-test"]
     types: ["completed"]   
     branches:
-      - main
+      - 'main'
       paths-ignore:
         - 'terraform/**'
 
