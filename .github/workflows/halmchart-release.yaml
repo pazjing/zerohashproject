@@ -4,13 +4,10 @@ on:
   workflow_run:
     workflows: ["Docker-push"]
     types: ["completed"]   
-    branches:
-      - 'main'
-      paths-ignore:
-        - 'terraform/**'
 
 jobs:
   Release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
