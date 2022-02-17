@@ -1,18 +1,13 @@
-name: Release Charts
+name: halmchart-release
 
-on:   
-  push:
-    branches:
-      - main
-
+on:  
   workflow_run:
-    workflows:
-      - DockerPush
-    types:
-      - completed
+    workflows: ["docker-build-test-push"]
+    types: ["completed"]   
 
 jobs:
   Release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

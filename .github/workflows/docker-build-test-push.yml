@@ -1,15 +1,12 @@
-name: DockerPush
+name: docker-build-test-push
 
-on:   
+on:
   push:
-    branches:
-      - main
-
-  workflow_run:
-    workflows:
-      - DockerBuildandTest
-    types:
-      - completed
+    paths-ignore:
+      - 'terraform/**'
+  pull_request:
+    paths-ignore:
+      - 'terraform/**'  
 
 jobs:
   build:

@@ -12,9 +12,5 @@
         "express": "^4.17.2",
         "prometheus-api-metrics": "^3.2.0",
         "request": "^2.88.2"
-    },
-    "devDependencies": {
-        "connect-livereload": "^0.6.1",
-        "livereload": "^0.9.3"
     }
 }
