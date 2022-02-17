@@ -33,7 +33,7 @@ jobs:
           mkdir -p gh-pages
           cd gh-pages
           helm package ../charts/*
-          helm repo index --url `
+          helm repo index --url https://pazjing.github.io/zerohashproject/ .
           pwd
           ls -alt
           cat index.yaml
