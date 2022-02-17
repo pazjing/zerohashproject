@@ -1,16 +1,14 @@
 name: Release Charts
 
-on:   
-  push:
+on:  
+  workflow_run:
+    workflows: ["DockerPush"]
+    types: ["completed"]   
     branches:
       - main
-
-  workflow_run:
-    workflows:
-      - DockerPush
-    types:
-      - completed
-
+      paths-ignore:
+        - 'terraform/**'
+        
 jobs:
   Release:
     runs-on: ubuntu-latest

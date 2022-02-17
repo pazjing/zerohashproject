@@ -32,7 +32,7 @@ app.get('/jsonerror', function(req, res, next) {
 app.get('/:currency', async function (req, res) {
     reqCurrency = req.params.currency.toUpperCase();
 
-    // Add BAD for test scenario 
+    // Add BAD option only for error test scenario 
     var currencyList = ["EUR","GBP","USD","JPY", "BAD"];
 
     if (currencyList.includes(reqCurrency)) {

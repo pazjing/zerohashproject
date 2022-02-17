@@ -1,6 +1,12 @@
 name: DockerBuildandTest
 
-on: [push]
+on: 
+  push:
+    paths-ignore:
+      - 'terraform/**'
+  pull_request:
+    paths-ignore:
+      - 'terraform/**'
 
 jobs:
   build:
