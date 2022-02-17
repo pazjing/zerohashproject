@@ -3,12 +3,12 @@ entries:
   zerohashchart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-02-17T10:47:21.194039798Z"
+    created: "2022-02-17T11:17:43.144663011Z"
     description: A Helm chart for deploy node js app to Kubernetes
-    digest: 1f0a08d557429e229e0476b63f9ecfb46237e744da34d0daf1c450995bcdb155
+    digest: f6349427047534a164d31500fbfdd0ccebb3216252985472e072a20326451f11
     name: zerohashchart
     type: application
     urls:
     - https://pazjing.github.io/zerohashproject/zerohashchart-0.1.0.tgz
     version: 0.1.0
-generated: "2022-02-17T10:47:21.192852217Z"
+generated: "2022-02-17T11:17:43.143917206Z"
