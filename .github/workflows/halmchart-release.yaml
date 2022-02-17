@@ -1,8 +1,8 @@
-name: Halmchart-release
+name: halmchart-release
 
 on:  
   workflow_run:
-    workflows: ["Docker-push"]
+    workflows: ["docker-build-test-push"]
     types: ["completed"]   
 
 jobs:

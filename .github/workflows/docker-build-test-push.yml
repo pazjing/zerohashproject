@@ -1,12 +1,12 @@
-name: Build-and-test
+name: docker-build-test-push
 
-on: 
+on:
   push:
     paths-ignore:
       - 'terraform/**'
   pull_request:
     paths-ignore:
-      - 'terraform/**'
+      - 'terraform/**'  
 
 jobs:
   build:
@@ -52,3 +52,47 @@ jobs:
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+  
+  push-image:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          tags: |
+            pazjing/zerohashapp:latest
+            pazjing/zerohashapp:1.0.0
+          push: true
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Send push image result to Slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        if: always()
+        with:
+          payload: |
+            {
+              "text": "GitHub Action push image result: ${{ job.status }}\n"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
